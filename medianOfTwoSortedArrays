@@ -1,0 +1,39 @@
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+	
+		#initialisation of pointers and output
+        p1 = p2 = 0
+        out = []
+        
+		#while still lists
+        while (p1 <= len(nums1)-1) and (p2 <= len(nums2)-1):
+            
+            if nums1[p1] < nums2[p2]:
+                out.append(nums1[p1])
+                p1 += 1
+                
+            elif nums1[p1] > nums2[p2]:
+                out.append(nums2[p2])
+                p2 += 1
+            
+            else:
+                out.append(nums1[p1])
+                out.append(nums2[p2])
+                p1 += 1
+                p2 += 1
+                
+        #append to outpur whichever list is left
+        if p1 == len(nums1):
+            out.extend(num2[p2:])
+        if p2 == len(nums2):
+            out.extend(nums1[p1:])
+			
+		#find the median point
+        
+        m = (len(out)/2) -1
+        l2 = (out[int(m)] + out[int(m + 1)]) / 2
+        
+        if len(out) % 2 == 0:
+            return l2
+        else:
+            return out[m]

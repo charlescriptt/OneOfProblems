@@ -1,0 +1,44 @@
+class Solution:
+    def calculateMinimumHP(self, dungeon: List[List[int]]) -> int:
+        #creation of dummy grid
+		
+        grid = dungeon
+        m, n = len(grid), len(grid[0])
+		
+		#starting from final location (destination) finds the route of least resistance
+        
+        for i in range(m-1,-1,-1):
+            for j in range(n-1,-1,-1):
+				
+				#end case                
+                if i == m-1 and j == n-1:
+				
+					#checks if damage is taken and sets needed health accordingly                    
+                    if grid[i][j] < 0:
+                        grid[i][j] = abs(1-grid[i][j]) #1 for additional health needed
+                        print(grid[i][j])
+                    else:
+                        grid[i][j] = 1
+						
+				#if we have reached bottom row
+                        
+                elif i == m-1:
+                    if grid[i][j+1] > grid[i][j]:
+                        grid[i][j] = grid[i][j+1] - grid[i][j]
+                    else:
+                        grid[i][j] = 1
+                
+				#if we have reached final collumn
+                elif j == n-1:
+                    if grid[i+1][j] > grid[i][j]:
+                        grid[i][j] = grid[i+1][j] - grid[i][j]
+                    else:
+                        grid[i][j] = 1
+                
+				#checks adjacent cells and will select the path with least damage (least resistance)
+                else:
+                    if grid[i][j+1] > grid[i][j] and grid[i+1][j] > grid[i][j]:
+                        grid[i][j] = min(grid[i][j+1], grid[i+1][j]) - grid[i][j]
+                    else:
+                        grid[i][j] = 1
+        return grid[0][0]
